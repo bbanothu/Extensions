@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get("savedMessage", (items) => {
       sendResponse({ message: items.savedMessage });
     });
-    return true;  // Will respond asynchronously.
+    return true;
   }
 });
+

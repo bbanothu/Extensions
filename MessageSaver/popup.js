@@ -1,5 +1,5 @@
 let currentMessageIndex = 0;
-let messages = [{title: '', content: ''}];
+let messages = [{ title: '', content: '' }];
 
 chrome.storage.sync.get("savedMessages", (items) => {
     if (items.savedMessages) {
@@ -13,10 +13,10 @@ document.getElementById('save').addEventListener('click', () => {
         title: document.getElementById('title').value,
         content: document.getElementById('message').value
     };
-    chrome.storage.sync.set({"savedMessages": messages});
+    chrome.storage.sync.set({ "savedMessages": messages });
 });
 
-document.getElementById('paste').addEventListener('click', () => {
+document.getElementById('copy').addEventListener('click', () => {
     const textArea = document.createElement('textarea');
     textArea.value = messages[currentMessageIndex].content;
     document.body.appendChild(textArea);
@@ -36,7 +36,7 @@ document.getElementById('forward').addEventListener('click', () => {
     if (currentMessageIndex < messages.length - 1) {
         currentMessageIndex++;
     } else {
-        messages.push({title: '', content: ''});
+        messages.push({ title: '', content: '' });
         currentMessageIndex++;
     }
     updateUI();
@@ -49,20 +49,52 @@ document.getElementById('delete').addEventListener('click', () => {
             currentMessageIndex--;
         }
     } else {
-        messages[0] = {title: '', content: ''};
+        messages[0] = { title: '', content: '' };
     }
     updateUI();
-    chrome.storage.sync.set({"savedMessages": messages});
+    chrome.storage.sync.set({ "savedMessages": messages });
 });
 
-document.addEventListener('keydown', function(event) {
-    // Check if Ctrl or Command is pressed along with C
+document.addEventListener('keydown', function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
         const messageTextArea = document.getElementById('message');
-        // Copy the content of the text area to clipboard
         navigator.clipboard.writeText(messageTextArea.value);
     }
 });
+
+document.addEventListener('keydown', function (event) {
+    switch (event.key) {
+        case 'ArrowLeft':
+            goBack();
+            break;
+        case 'ArrowRight':
+            goForward();
+            break;
+        case 'ArrowDown':
+            closeExtension();
+            break;
+        default:
+            break;
+    }
+});
+
+function goBack() {
+    var backButton = document.getElementById('back');
+    if (!backButton.disabled) {
+        backButton.click();
+    }
+}
+
+function goForward() {
+    var forwardButton = document.getElementById('forward');
+    if (!forwardButton.disabled) {
+        forwardButton.click();
+    }
+}
+
+function closeExtension() {
+    window.close();
+}
 
 
 function updateUI() {

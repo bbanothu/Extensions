@@ -1,0 +1,63 @@
+body {
+    width: 500px;
+    background-color: #2C3E50;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h3 {
+    color: #ECF0F1;
+    margin-bottom: 20px;
+    display: inline;
+}
+
+span {
+    color: #ECF0F1;
+}
+
+#message {
+    height: 300px;
+    border-radius: 5px;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #3498DB;
+}
+
+.btn-primary:hover {
+    background-color: #2980B9;
+}
+
+.btn-success {
+    background-color: #2ECC71;
+}
+
+.btn-success:hover {
+    background-color: #27AE60;
+}
+
+.btn-info {
+    background-color: #9B59B6;
+}
+
+.btn-info:hover {
+    background-color: #8E44AD;
+}
+
+.btn-danger {
+    background-color: #E74C3C;
+}
+
+.btn-danger:hover {
+    background-color: #C0392B;
+}
+
+.info-icon {
+    margin-left: 10px;
+    color: #ECF0F1;
+    cursor: pointer;
+}
