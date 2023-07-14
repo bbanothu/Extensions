@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Go to Company",
+  "version": "1.0",
+  "description": "Highlight text and go to the company's LinkedIn page.",
+  "permissions": ["contextMenus"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "action": {
+    "default_icon": "jobs.png"
+  },
+  "icons": {
+    "16": "jobs.png",
+    "48": "jobs.png",
+    "128": "jobs.png"
+  }
+}

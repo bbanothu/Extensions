@@ -10,5 +10,10 @@
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
+  },
+    "icons": {
+    "16": "assets/copy.png",
+    "48": "assets/copy.png",
+    "128": "assets/copy.png"
   }
 }
