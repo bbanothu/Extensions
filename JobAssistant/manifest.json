@@ -1,22 +1,24 @@
 {
   "manifest_version": 3,
-  "name": "Message Saver",
-  "version": "1.0",
-  "description": "Saves and pastes messages on command",
+  "name": "Job Assistant",
+  "version": "2.0.0",
+  "description": "Saves and pastes messages on command, finds companies/people on LinkedIn, and tailors your resume to a job posting.",
   "action": {
-    "default_icon": "assets/copy.png",
-    "default_popup": "popup.html"
+    "default_icon": "public/assets/copy.png",
+    "default_popup": "src/popup/index.html"
   },
   "permissions": ["storage", "sidePanel", "contextMenus"],
+  "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background/index.js",
+    "type": "module"
   },
   "icons": {
-    "16": "assets/copy.png",
-    "48": "assets/copy.png",
-    "128": "assets/copy.png"
+    "16": "public/assets/copy.png",
+    "48": "public/assets/copy.png",
+    "128": "public/assets/copy.png"
   },
   "side_panel": {
-    "default_path": "sidepanel.html"
+    "default_path": "src/sidepanel/index.html"
   }
 }
