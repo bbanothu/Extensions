@@ -10,7 +10,8 @@
   "permissions": [
     "storage",
     "sidePanel",
-    "contextMenus"
+    "contextMenus",
+    "declarativeNetRequest"
   ],
   "host_permissions": [
     "http://*/*",
@@ -27,5 +28,8 @@
   },
   "side_panel": {
     "default_path": "src/sidepanel/index.html"
+  },
+  "chrome_url_overrides": {
+    "newtab": "src/newtab/index.html"
   }
 }

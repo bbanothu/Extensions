@@ -14,14 +14,20 @@ import ProfileField from '../components/ProfileField.jsx';
 import RepeatingSection from '../components/RepeatingSection.jsx';
 
 const IDENTITY_FIELDS = [
-  { key: 'name', label: 'Full Name', type: 'text' },
-  { key: 'location', label: 'Location', type: 'text' },
+  { key: 'name', label: 'Full Name', type: 'text', autoComplete: 'name' },
+  { key: 'location', label: 'Location', type: 'text', autoComplete: 'address-level2' },
   { key: 'remoteOk', label: 'Willing to relocate / remote', type: 'checkbox' },
-  { key: 'email', label: 'Email', type: 'text' },
-  { key: 'phone', label: 'Phone', type: 'text' },
-  { key: 'github', label: 'GitHub', type: 'text' },
-  { key: 'linkedin', label: 'LinkedIn', type: 'text' },
-  { key: 'portfolio', label: 'Portfolio URL', type: 'text' },
+  { key: 'email', label: 'Email', type: 'text', inputType: 'email', autoComplete: 'email' },
+  { key: 'phone', label: 'Phone', type: 'text', inputType: 'tel', autoComplete: 'tel' },
+  { key: 'github', label: 'GitHub', type: 'text', inputType: 'url', autoComplete: 'url' },
+  { key: 'linkedin', label: 'LinkedIn', type: 'text', inputType: 'url', autoComplete: 'url' },
+  {
+    key: 'portfolio',
+    label: 'Portfolio URL',
+    type: 'text',
+    inputType: 'url',
+    autoComplete: 'url',
+  },
   { key: 'workAuthorization', label: 'Work Authorization (optional)', type: 'text' },
 ];
 
@@ -63,7 +69,7 @@ const EXPERIENCE_FIELDS = [
   { key: 'promotedFrom', label: 'Promoted From (optional)', type: 'text' },
   { key: 'start', label: 'Start Date', type: 'text' },
   { key: 'end', label: 'End Date', type: 'text' },
-  { key: 'location', label: 'Location', type: 'text' },
+  { key: 'location', label: 'Location', type: 'text', autoComplete: 'address-level2' },
   {
     key: 'employmentType',
     label: 'Employment Type',
@@ -114,7 +120,7 @@ const PROJECT_FIELDS = [
   { key: 'name', label: 'Project Name', type: 'text' },
   { key: 'elaborate', label: 'Elaborate', type: 'textarea' },
   { key: 'tech', label: 'Tech (comma-separated)', type: 'tags' },
-  { key: 'url', label: 'URL', type: 'text' },
+  { key: 'url', label: 'URL', type: 'text', inputType: 'url', autoComplete: 'url' },
   { key: 'include', label: 'Include', type: 'checkbox' },
 ];
 

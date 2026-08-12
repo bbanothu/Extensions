@@ -10,7 +10,7 @@ function formatDate(ts) {
   });
 }
 
-export default function History() {
+export default function History({ onClose }) {
   const [items, setItems] = useState([]);
   const [openId, setOpenId] = useState(null);
 
@@ -23,18 +23,21 @@ export default function History() {
     if (openId === id) setOpenId(null);
   }
 
-  if (!items.length) {
-    return (
-      <div className="panel">
-        <div className="card muted small">
-          No tailored resumes yet. Generate one from the Tailor Resume tab and it'll show up here.
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="panel">
+      <div className="row-between">
+        <span className="section-header title">History</span>
+        <button className="btn btn-ghost btn-icon" onClick={onClose} title="Close">
+          ✕
+        </button>
+      </div>
+
+      {!items.length && (
+        <div className="card muted small">
+          No tailored resumes yet. Generate one from the Resume tab and it'll show up here.
+        </div>
+      )}
+
       {items.map((item) => (
         <div
           key={item.id}

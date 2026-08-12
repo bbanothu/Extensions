@@ -100,7 +100,13 @@ export default function ProfileField({ field, value, onChange }) {
   return (
     <div>
       <label>{label}</label>
-      <input type="text" value={value ?? ''} onChange={(e) => onChange(e.target.value)} />
+      <input
+        type={field.inputType || 'text'}
+        name={field.autoComplete ? field.key : undefined}
+        autoComplete={field.autoComplete || 'off'}
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
   );
 }

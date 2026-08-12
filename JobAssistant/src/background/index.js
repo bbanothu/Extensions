@@ -1,3 +1,32 @@
+// Job Assistant's new-tab grid embeds job sites in iframes; most of them send
+// X-Frame-Options/CSP headers that block framing entirely. This rule strips
+// those headers, but only for sub-frame requests our own extension initiates
+// (i.e. iframes inside the grid page) — it never touches normal browsing.
+function registerGridFrameRule() {
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [1],
+    addRules: [
+      {
+        id: 1,
+        priority: 1,
+        action: {
+          type: 'modifyHeaders',
+          responseHeaders: [
+            { header: 'x-frame-options', operation: 'remove' },
+            { header: 'content-security-policy', operation: 'remove' },
+            { header: 'content-security-policy-report-only', operation: 'remove' },
+          ],
+        },
+        condition: {
+          initiatorDomains: [chrome.runtime.id],
+          resourceTypes: ['sub_frame'],
+        },
+      },
+    ],
+  });
+}
+registerGridFrameRule();
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'jobFinder',

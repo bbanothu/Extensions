@@ -124,16 +124,15 @@ export default function Settings({ onClose }) {
 
       {section === 'models' && (
         <>
-          <div className="subtabs">
-            {PROVIDERS.map((p) => (
-              <button
-                key={p.id}
-                className={`subtab${provider === p.id ? ' active' : ''}`}
-                onClick={() => chooseProvider(p.id)}
-              >
-                {p.label}
-              </button>
-            ))}
+          <div>
+            <label>Provider</label>
+            <select value={provider} onChange={(e) => chooseProvider(e.target.value)}>
+              {PROVIDERS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {provider === 'anthropic' && (

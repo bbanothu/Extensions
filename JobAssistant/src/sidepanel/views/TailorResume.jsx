@@ -9,6 +9,8 @@ import {
   getOllamaModel,
   getOpenRouterKey,
   getOpenRouterModel,
+  getResumeDraft,
+  setResumeDraft,
 } from '../../lib/storage.js';
 import { addHistoryEntry } from '../../lib/history.js';
 import { getProfile, serializeProfile } from '../../lib/profile.js';
@@ -36,10 +38,12 @@ export default function TailorResume() {
   const [provider, setProviderState] = useState('anthropic');
 
   const [resumeFile, setResumeFile] = useState(null);
+  const [resumeFileName, setResumeFileName] = useState('');
   const [resumeText, setResumeText] = useState('');
   const [jobUrl, setJobUrl] = useState('');
   const [jdText, setJdText] = useState('');
   const [dragOver, setDragOver] = useState(false);
+  const loadedDraft = useRef(false);
 
   const [status, setStatus] = useState('idle'); // idle | parsing | fetching | generating | done | error
   const [error, setError] = useState('');
@@ -51,7 +55,20 @@ export default function TailorResume() {
   useEffect(() => {
     getApiKey().then(setApiKeyState);
     getProvider().then(setProviderState);
+    getResumeDraft().then((draft) => {
+      setMode(draft.mode);
+      setResumeText(draft.resumeText);
+      setResumeFileName(draft.resumeFileName);
+      setJobUrl(draft.jobUrl);
+      setJdText(draft.jdText);
+      loadedDraft.current = true;
+    });
   }, []);
+
+  useEffect(() => {
+    if (!loadedDraft.current) return;
+    setResumeDraft({ mode, resumeText, resumeFileName, jobUrl, jdText });
+  }, [mode, resumeText, resumeFileName, jobUrl, jdText]);
 
   async function handleFile(file) {
     if (!file || file.type !== 'application/pdf') {
@@ -60,6 +77,7 @@ export default function TailorResume() {
     }
     setError('');
     setResumeFile(file);
+    setResumeFileName(file.name);
     setStatus('parsing');
     try {
       const text = await extractPdfText(file);
@@ -69,6 +87,18 @@ export default function TailorResume() {
       setError(`Could not read PDF: ${e.message}`);
       setStatus('error');
     }
+  }
+
+  function clearDraft() {
+    setResumeFile(null);
+    setResumeFileName('');
+    setResumeText('');
+    setJobUrl('');
+    setJdText('');
+    setResult('');
+    setResultMeta({ resumeLabel: '', jobTitle: '' });
+    setError('');
+    setStatus('idle');
   }
 
   async function redoResume() {
@@ -105,7 +135,7 @@ export default function TailorResume() {
     }
 
     let sourceResumeText = resumeText;
-    let resumeLabel = resumeFile?.name || '';
+    let resumeLabel = resumeFile?.name || resumeFileName || '';
     if (mode === 'custom') {
       const profile = await getProfile();
       sourceResumeText = serializeProfile(profile);
@@ -196,8 +226,13 @@ export default function TailorResume() {
   return (
     <div className="panel panel-bottom-actions">
       <div>
-        <label>Source</label>
-        <select value={mode} onChange={(e) => setMode(e.target.value)}>
+        <div className="row-between">
+          <label style={{ marginBottom: 0 }}>Source</label>
+          <button className="btn btn-ghost small" onClick={clearDraft} type="button">
+            Clear
+          </button>
+        </div>
+        <select value={mode} onChange={(e) => setMode(e.target.value)} style={{ marginTop: 9 }}>
           {MODES.map((m) => (
             <option key={m.id} value={m.id}>
               {m.label}
@@ -245,8 +280,8 @@ export default function TailorResume() {
           >
             {status === 'parsing' ? (
               <span>Reading PDF…</span>
-            ) : resumeFile ? (
-              <span className="filename">{resumeFile.name} ✓</span>
+            ) : resumeFile || resumeFileName ? (
+              <span className="filename">{resumeFile?.name || resumeFileName} ✓</span>
             ) : (
               <span>Click or drop your resume PDF here</span>
             )}
