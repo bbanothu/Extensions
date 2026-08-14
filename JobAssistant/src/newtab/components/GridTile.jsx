@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import * as ui from '../../styles/ui.js';
 
 const LOAD_TIMEOUT_MS = 8000;
 
@@ -25,12 +26,14 @@ export default function GridTile({ tile, onRemove }) {
   }
 
   return (
-    <div className="grid-tile">
-      <div className="grid-tile-handle">
-        <span className="grid-tile-label">{tile.label}</span>
-        <div className="grid-tile-actions">
+    <div className={`${ui.card} p-0 overflow-hidden flex flex-col h-full`}>
+      <div className="flex items-center justify-between gap-2.5 pl-3.5 pr-2 py-2 bg-surface-strong cursor-move shrink-0 grid-tile-handle">
+        <span className="font-semibold text-[13px] text-ink overflow-hidden text-ellipsis whitespace-nowrap">
+          {tile.label}
+        </span>
+        <div className="flex gap-0.5 shrink-0">
           <button
-            className="btn btn-ghost btn-icon-sm"
+            className={`${ui.btn} ${ui.btnIconSm}`}
             onClick={reload}
             title="Refresh"
             type="button"
@@ -38,7 +41,7 @@ export default function GridTile({ tile, onRemove }) {
             ⟳
           </button>
           <button
-            className="btn btn-ghost btn-icon-sm"
+            className={`${ui.btn} ${ui.btnIconSm}`}
             onClick={openInTab}
             title="Open in tab"
             type="button"
@@ -46,7 +49,7 @@ export default function GridTile({ tile, onRemove }) {
             ⇱
           </button>
           <button
-            className="btn btn-ghost btn-icon-sm"
+            className={`${ui.btn} ${ui.btnIconSm}`}
             onClick={onRemove}
             title="Remove"
             type="button"
@@ -55,19 +58,25 @@ export default function GridTile({ tile, onRemove }) {
           </button>
         </div>
       </div>
-      <div className="grid-tile-body">
-        {status === 'loading' && <div className="grid-tile-spinner" />}
+      <div className="relative flex-1 flex">
+        {status === 'loading' && (
+          <div className="absolute top-3.5 right-3.5 w-[17px] h-[17px] rounded-full border-[2.5px] border-surface-strong border-t-muted animate-spin pointer-events-none" />
+        )}
         {status === 'timeout' && (
-          <div className="grid-tile-fallback">
-            <p className="muted small">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3.5 p-6 text-center bg-surface">
+            <p className={`${ui.muted} ${ui.small}`}>
               This is taking too long to load embedded — the site may be blocking it (bot protection
               or anti-embedding scripts).
             </p>
-            <div className="row">
-              <button className="btn btn-ghost small" onClick={reload} type="button">
+            <div className={ui.row}>
+              <button className={`${ui.btn} ${ui.small}`} onClick={reload} type="button">
                 Retry
               </button>
-              <button className="btn btn-primary small" onClick={openInTab} type="button">
+              <button
+                className={`${ui.btn} ${ui.btnPrimary} ${ui.small}`}
+                onClick={openInTab}
+                type="button"
+              >
                 Open in Tab
               </button>
             </div>
@@ -77,8 +86,7 @@ export default function GridTile({ tile, onRemove }) {
           key={reloadKey}
           src={tile.url}
           title={tile.label}
-          className="grid-tile-frame"
-          style={{ display: status === 'timeout' ? 'none' : 'block' }}
+          className={`flex-1 w-full border-none bg-white ${status === 'timeout' ? 'hidden' : 'block'}`}
           onLoad={() => setStatus('loaded')}
         />
       </div>

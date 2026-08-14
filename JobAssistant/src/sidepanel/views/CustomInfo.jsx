@@ -12,6 +12,7 @@ import {
 } from '../../lib/profile.js';
 import ProfileField from '../components/ProfileField.jsx';
 import RepeatingSection from '../components/RepeatingSection.jsx';
+import * as ui from '../../styles/ui.js';
 
 const IDENTITY_FIELDS = [
   { key: 'name', label: 'Full Name', type: 'text', autoComplete: 'name' },
@@ -145,20 +146,12 @@ const CONTROLS_FIELDS = [
 
 function Section({ title, subtitle, children, defaultOpen }) {
   return (
-    <details className="card" open={defaultOpen} style={{ padding: 0 }}>
-      <summary
-        style={{ padding: 18, cursor: 'pointer', fontWeight: 700, fontSize: 17, listStyle: 'none' }}
-      >
+    <details className={`${ui.card} p-0`} open={defaultOpen}>
+      <summary className="p-[18px] cursor-pointer font-bold text-[17px] list-none">
         {title}
-        {subtitle && (
-          <div className="muted small" style={{ fontWeight: 400, marginTop: 4 }}>
-            {subtitle}
-          </div>
-        )}
+        {subtitle && <div className={`${ui.muted} ${ui.small} font-normal mt-1`}>{subtitle}</div>}
       </summary>
-      <div style={{ padding: '0 18px 18px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {children}
-      </div>
+      <div className="px-[18px] pb-[18px] flex flex-col gap-3.5">{children}</div>
     </details>
   );
 }
@@ -194,8 +187,8 @@ export default function CustomInfo() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <p className="muted small" style={{ margin: 0 }}>
+    <div className="flex flex-col gap-3">
+      <p className={`${ui.muted} ${ui.small} m-0`}>
         Fill in as much or as little as you like. This is saved locally and will power tailored
         resume generation from your own data — not just a URL — in a future update.
       </p>
@@ -282,7 +275,7 @@ export default function CustomInfo() {
         />
       </Section>
 
-      <button className="btn btn-primary" onClick={save}>
+      <button className={`${ui.btn} ${ui.btnPrimary}`} onClick={save}>
         {saved ? 'Saved ✓' : 'Save Profile'}
       </button>
     </div>

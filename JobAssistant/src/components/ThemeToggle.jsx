@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { applyTheme, getStoredTheme, setStoredTheme } from '../lib/theme.js';
+import * as ui from '../styles/ui.js';
 
 const CYCLE = ['system', 'light', 'dark'];
 const ICON = { system: '◐', light: '☀', dark: '☾' };
 const LABEL = { system: 'System', light: 'Light', dark: 'Dark' };
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ size = 'md' }) {
   const [theme, setTheme] = useState('system');
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function ThemeToggle() {
 
   return (
     <button
-      className="btn btn-ghost btn-icon"
+      className={`${ui.btn} ${size === 'sm' ? ui.btnIconSm : ui.btnIcon}`}
       onClick={cycle}
       title={`Theme: ${LABEL[theme]} (click to change)`}
     >

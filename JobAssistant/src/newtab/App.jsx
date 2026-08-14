@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import ReactGridLayout, { useContainerWidth } from 'react-grid-layout';
 import ThemeToggle from '../components/ThemeToggle.jsx';
+import Logo from '../components/Logo.jsx';
 import { getGridTiles, setGridTiles } from '../lib/storage.js';
 import GridTile from './components/GridTile.jsx';
+import * as ui from '../styles/ui.js';
 
 export default function App() {
   const { width, containerRef, mounted } = useContainerWidth();
@@ -64,34 +66,40 @@ export default function App() {
   }
 
   return (
-    <div className="newtab-app">
-      <div className="newtab-header">
-        <div className="logo" />
-        <h1>Job Assistant</h1>
-        <form className="add-tile-form" onSubmit={addTile}>
+    <div className="flex flex-col h-screen">
+      <div className="flex items-center gap-4 px-6 py-4 shrink-0">
+        <Logo className="shrink-0" />
+        <h1 className="text-xl font-bold m-0 tracking-[-0.3px] lowercase shrink-0">
+          Resume Assistant
+        </h1>
+        <form className="flex gap-2 flex-1" onSubmit={addTile}>
           <input
             type="url"
+            className={`${ui.input} py-2.5 px-4 text-sm flex-[2]`}
             placeholder="https://..."
             value={addingUrl}
             onChange={(e) => setAddingUrl(e.target.value)}
           />
           <input
             type="text"
+            className={`${ui.input} py-2.5 px-4 text-sm flex-1`}
             placeholder="Label (optional)"
             value={addingLabel}
             onChange={(e) => setAddingLabel(e.target.value)}
           />
-          <button className="btn btn-primary" type="submit">
+          <button
+            className={`${ui.btn} ${ui.btnPrimary} py-2.5 px-5 text-sm shrink-0`}
+            type="submit"
+          >
             Add Tile
           </button>
         </form>
         <ThemeToggle />
       </div>
 
-      <div className="tile-grid-container" ref={containerRef}>
+      <div className="flex-1 overflow-auto px-6 pb-6" ref={containerRef}>
         {mounted && loaded && (
           <ReactGridLayout
-            className="tile-grid"
             width={width}
             layout={layout}
             gridConfig={{ cols: 12, rowHeight: 32, margin: [14, 14] }}

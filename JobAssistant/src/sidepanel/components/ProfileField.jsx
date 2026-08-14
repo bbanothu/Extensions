@@ -1,4 +1,5 @@
 import RepeatingSection from './RepeatingSection.jsx';
+import * as ui from '../../styles/ui.js';
 
 export default function ProfileField({ field, value, onChange }) {
   const { type, label, options } = field;
@@ -6,7 +7,7 @@ export default function ProfileField({ field, value, onChange }) {
   if (type === 'repeating') {
     return (
       <div>
-        <label>{label}</label>
+        <label className={ui.label}>{label}</label>
         <RepeatingSection
           items={value || []}
           onChange={onChange}
@@ -20,15 +21,12 @@ export default function ProfileField({ field, value, onChange }) {
 
   if (type === 'checkbox') {
     return (
-      <label
-        className="row"
-        style={{ textTransform: 'none', fontWeight: 400, color: 'var(--text)' }}
-      >
+      <label className={`${ui.row} normal-case font-normal text-ink`}>
         <input
           type="checkbox"
           checked={!!value}
           onChange={(e) => onChange(e.target.checked)}
-          style={{ width: 18, height: 18 }}
+          className="w-[18px] h-[18px] accent-accent"
         />
         {label}
       </label>
@@ -38,8 +36,12 @@ export default function ProfileField({ field, value, onChange }) {
   if (type === 'select') {
     return (
       <div>
-        <label>{label}</label>
-        <select value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
+        <label className={ui.label}>{label}</label>
+        <select
+          className={ui.select}
+          value={value ?? ''}
+          onChange={(e) => onChange(e.target.value)}
+        >
           {options.map((o) => (
             <option key={o} value={o}>
               {o}
@@ -53,8 +55,12 @@ export default function ProfileField({ field, value, onChange }) {
   if (type === 'textarea') {
     return (
       <div>
-        <label>{label}</label>
-        <textarea value={value ?? ''} onChange={(e) => onChange(e.target.value)} />
+        <label className={ui.label}>{label}</label>
+        <textarea
+          className={ui.textarea}
+          value={value ?? ''}
+          onChange={(e) => onChange(e.target.value)}
+        />
       </div>
     );
   }
@@ -62,10 +68,11 @@ export default function ProfileField({ field, value, onChange }) {
   if (type === 'number') {
     return (
       <div>
-        <label>{label}</label>
+        <label className={ui.label}>{label}</label>
         <input
           type="text"
           inputMode="numeric"
+          className={ui.input}
           value={value ?? ''}
           onChange={(e) => {
             const n = e.target.value.replace(/[^\d.-]/g, '');
@@ -79,9 +86,10 @@ export default function ProfileField({ field, value, onChange }) {
   if (type === 'tags') {
     return (
       <div>
-        <label>{label}</label>
+        <label className={ui.label}>{label}</label>
         <input
           type="text"
+          className={ui.input}
           value={(value || []).join(', ')}
           onChange={(e) =>
             onChange(
@@ -99,11 +107,12 @@ export default function ProfileField({ field, value, onChange }) {
 
   return (
     <div>
-      <label>{label}</label>
+      <label className={ui.label}>{label}</label>
       <input
         type={field.inputType || 'text'}
         name={field.autoComplete ? field.key : undefined}
         autoComplete={field.autoComplete || 'off'}
+        className={ui.input}
         value={value ?? ''}
         onChange={(e) => onChange(e.target.value)}
       />

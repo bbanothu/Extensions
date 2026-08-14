@@ -1,4 +1,5 @@
 import ProfileField from './ProfileField.jsx';
+import * as ui from '../../styles/ui.js';
 
 export default function RepeatingSection({
   items,
@@ -23,22 +24,15 @@ export default function RepeatingSection({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 10 : 14 }}>
+    <div className={`flex flex-col ${compact ? 'gap-2.5' : 'gap-3.5'}`}>
       {items.map((item, i) => (
-        <div
-          key={i}
-          className="card"
-          style={
-            compact
-              ? { padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }
-              : { display: 'flex', flexDirection: 'column', gap: 14 }
-          }
-        >
-          <div className="row-between">
-            <span className="muted small">{itemLabel ? itemLabel(item, i) : `#${i + 1}`}</span>
+        <div key={i} className={`${ui.card} flex flex-col ${compact ? 'p-3 gap-2.5' : 'gap-3.5'}`}>
+          <div className={ui.rowBetween}>
+            <span className={`${ui.muted} ${ui.small}`}>
+              {itemLabel ? itemLabel(item, i) : `#${i + 1}`}
+            </span>
             <button
-              className="btn btn-ghost btn-icon"
-              style={compact ? { width: 32, height: 32, fontSize: 13 } : undefined}
+              className={`${ui.btn} ${compact ? 'p-0 w-8 h-8 rounded-full text-[13px]' : ui.btnIcon}`}
               onClick={() => removeItem(i)}
               title="Remove"
             >
@@ -55,7 +49,7 @@ export default function RepeatingSection({
           ))}
         </div>
       ))}
-      <button className="btn btn-ghost" onClick={addItem}>
+      <button className={ui.btn} onClick={addItem}>
         + Add
       </button>
     </div>

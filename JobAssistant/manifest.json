@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Job Assistant",
+  "name": "Resume Assistant",
   "version": "2.0.0",
   "description": "Saves and pastes messages on command, finds companies/people on LinkedIn, and tailors your resume to a job posting.",
   "action": {

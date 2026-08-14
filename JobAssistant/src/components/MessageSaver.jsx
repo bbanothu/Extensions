@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import ThemeToggle from './ThemeToggle.jsx';
+import * as ui from '../styles/ui.js';
 
 const emptyMessage = { title: '', content: '' };
 
@@ -65,39 +67,50 @@ export default function MessageSaver() {
   }
 
   return (
-    <div className="panel panel-bottom-actions">
-      <div className="row-between">
-        <div className="row">
-          <strong>Message Saver</strong>
+    <div className={`${ui.panel} gap-4`}>
+      <div className={ui.rowBetween}>
+        <div className={ui.row}>
+          <span className={ui.sectionHeaderTitle}>Message Saver</span>
           <span
-            className="info-icon"
+            className={ui.infoIcon}
             title="Use the arrows to navigate messages. Type a title and message, then Save. Copy to clipboard, or delete with the trash icon."
           >
             &#9432;
           </span>
         </div>
-        <button className="btn btn-danger btn-icon" onClick={del} title="Delete this message">
-          🗑
-        </button>
+        <div className={ui.row}>
+          <button className={`${ui.btn} ${ui.btnIconSm}`} onClick={del} title="Delete this message">
+            🗑
+          </button>
+          <ThemeToggle size="sm" />
+        </div>
       </div>
 
-      <div className="row-between">
-        <button className="btn btn-ghost btn-icon" onClick={back} disabled={index === 0}>
+      <div
+        className={`${ui.rowBetween} bg-surface border border-surface-strong rounded-pill px-2 py-1.5`}
+      >
+        <button
+          className={`${ui.btn} ${ui.btnIconSm}`}
+          onClick={back}
+          disabled={index === 0}
+          title="Previous message"
+        >
           ‹
         </button>
-        <span className="muted small">
-          {index + 1}/{messages.length}
+        <span className={`${ui.muted} ${ui.small} font-medium`}>
+          {index + 1} / {messages.length}
         </span>
-        <button className="btn btn-ghost btn-icon" onClick={forward}>
+        <button className={`${ui.btn} ${ui.btnIconSm}`} onClick={forward} title="Next message">
           ›
         </button>
       </div>
 
       <div>
-        <label>Title</label>
+        <label className={ui.label}>Title</label>
         <input
           ref={titleRef}
           type="text"
+          className={ui.input}
           value={current.title}
           onChange={(e) => updateCurrent({ title: e.target.value })}
           placeholder="e.g. Cold outreach"
@@ -105,19 +118,20 @@ export default function MessageSaver() {
       </div>
 
       <div>
-        <label>Message</label>
+        <label className={ui.label}>Message</label>
         <textarea
+          className={`${ui.textarea} min-h-[140px]`}
           value={current.content}
           onChange={(e) => updateCurrent({ content: e.target.value })}
           placeholder="Write the message you want to reuse..."
         />
       </div>
 
-      <div className="row bottom-actions">
-        <button className="btn btn-success" onClick={save} style={{ flex: 1 }}>
+      <div className={ui.row}>
+        <button className={`${ui.btn} ${ui.btnPrimary} flex-1`} onClick={save}>
           Save
         </button>
-        <button className="btn btn-ghost" onClick={copy} style={{ flex: 1 }}>
+        <button className={`${ui.btn} flex-1`} onClick={copy}>
           {copied ? 'Copied!' : 'Copy to Clipboard'}
         </button>
       </div>

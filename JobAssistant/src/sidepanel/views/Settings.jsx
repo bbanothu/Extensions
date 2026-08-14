@@ -14,6 +14,7 @@ import {
 import { listOllamaModels } from '../../lib/ollama.js';
 import { listFreeOpenRouterModels } from '../../lib/openrouter.js';
 import CustomInfo from './CustomInfo.jsx';
+import * as ui from '../../styles/ui.js';
 
 const SECTIONS = [
   { id: 'models', label: 'Models' },
@@ -100,19 +101,19 @@ export default function Settings({ onClose }) {
   }
 
   return (
-    <div className="panel">
-      <div className="row-between">
-        <span className="section-header title">Settings</span>
-        <button className="btn btn-ghost btn-icon" onClick={onClose} title="Close">
+    <div className={ui.panel}>
+      <div className={ui.rowBetween}>
+        <span className={ui.sectionHeaderTitle}>Settings</span>
+        <button className={`${ui.btn} ${ui.btnIcon}`} onClick={onClose} title="Close">
           ✕
         </button>
       </div>
 
-      <div className="subtabs">
+      <div className={ui.subtabs}>
         {SECTIONS.map((s) => (
           <button
             key={s.id}
-            className={`subtab${section === s.id ? ' active' : ''}`}
+            className={`${ui.subtab} ${section === s.id ? ui.subtabActive : ''}`}
             onClick={() => setSection(s.id)}
           >
             {s.label}
@@ -125,8 +126,12 @@ export default function Settings({ onClose }) {
       {section === 'models' && (
         <>
           <div>
-            <label>Provider</label>
-            <select value={provider} onChange={(e) => chooseProvider(e.target.value)}>
+            <label className={ui.label}>Provider</label>
+            <select
+              className={ui.select}
+              value={provider}
+              onChange={(e) => chooseProvider(e.target.value)}
+            >
               {PROVIDERS.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.label}
@@ -136,47 +141,48 @@ export default function Settings({ onClose }) {
           </div>
 
           {provider === 'anthropic' && (
-            <div className="card">
-              <label>Anthropic API Key</label>
+            <div className={ui.card}>
+              <label className={ui.label}>Anthropic API Key</label>
               <input
                 type="password"
+                className={ui.input}
                 placeholder="sk-ant-..."
                 value={draftKey}
                 onChange={(e) => setDraftKey(e.target.value)}
               />
-              <div className="muted small" style={{ marginTop: 12 }}>
+              <div className={`${ui.muted} ${ui.small} mt-3`}>
                 Used to generate tailored resumes. Stored locally in this browser and only ever sent
                 to Anthropic's API.
               </div>
-              <button
-                className="btn btn-primary"
-                style={{ marginTop: 16, width: '100%' }}
-                onClick={saveKey}
-              >
+              <button className={`${ui.btn} ${ui.btnPrimary} mt-4 w-full`} onClick={saveKey}>
                 {savedKey ? 'Saved ✓' : 'Save Key'}
               </button>
             </div>
           )}
 
           {provider === 'ollama' && (
-            <div className="card">
-              <label>Model</label>
+            <div className={ui.card}>
+              <label className={ui.label}>Model</label>
               {modelStatus === 'loading' && (
-                <div className="muted small">Checking localhost:11434…</div>
+                <div className={`${ui.muted} ${ui.small}`}>Checking localhost:11434…</div>
               )}
               {modelStatus === 'error' && (
-                <div className="error-box">
+                <div className={ui.errorBox}>
                   Couldn't reach Ollama at localhost:11434. Run <code>ollama serve</code> and make
                   sure at least one model is pulled (e.g. <code>ollama pull llama3.1</code>).
                 </div>
               )}
               {modelStatus === 'ok' && models.length === 0 && (
-                <div className="muted small">
+                <div className={`${ui.muted} ${ui.small}`}>
                   No models pulled yet. Run <code>ollama pull llama3.1</code>.
                 </div>
               )}
               {modelStatus === 'ok' && models.length > 0 && (
-                <select value={selectedModel} onChange={(e) => chooseModel(e.target.value)}>
+                <select
+                  className={ui.select}
+                  value={selectedModel}
+                  onChange={(e) => chooseModel(e.target.value)}
+                >
                   {models.map((m) => (
                     <option key={m} value={m}>
                       {m}
@@ -184,44 +190,46 @@ export default function Settings({ onClose }) {
                   ))}
                 </select>
               )}
-              <div className="muted small" style={{ marginTop: 12 }}>
+              <div className={`${ui.muted} ${ui.small} mt-3`}>
                 Runs fully on your machine — nothing leaves your computer. No API key needed.
               </div>
             </div>
           )}
 
           {provider === 'openrouter' && (
-            <div className="card">
-              <label>OpenRouter API Key</label>
+            <div className={ui.card}>
+              <label className={ui.label}>OpenRouter API Key</label>
               <input
                 type="password"
+                className={ui.input}
                 placeholder="sk-or-v1-..."
                 value={orKey}
                 onChange={(e) => setOrKey(e.target.value)}
               />
-              <div className="row-between" style={{ marginTop: 16 }}>
-                <label style={{ marginBottom: 0 }}>Model</label>
-                <button className="btn btn-ghost small" onClick={loadFreeModels}>
+              <div className={`${ui.rowBetween} mt-4`}>
+                <label className={`${ui.label} mb-0`}>Model</label>
+                <button className={`${ui.btn} ${ui.small}`} onClick={loadFreeModels}>
                   {freeStatus === 'loading' ? 'Loading…' : 'Browse free models'}
                 </button>
               </div>
               <input
                 type="text"
+                className={ui.input}
                 placeholder="anthropic/claude-3.5-sonnet"
                 value={orModel}
                 onChange={(e) => setOrModel(e.target.value)}
               />
 
               {freeStatus === 'error' && (
-                <div className="error-box" style={{ marginTop: 10 }}>
+                <div className={`${ui.errorBox} mt-2.5`}>
                   Couldn't load the model list from OpenRouter.
                 </div>
               )}
               {freeModels && freeModels.length > 0 && (
                 <select
+                  className={`${ui.select} mt-2.5`}
                   value=""
                   onChange={(e) => e.target.value && setOrModel(e.target.value)}
-                  style={{ marginTop: 10 }}
                 >
                   <option value="">{freeModels.length} free models — pick one…</option>
                   {freeModels.map((m) => (
@@ -232,15 +240,11 @@ export default function Settings({ onClose }) {
                 </select>
               )}
 
-              <div className="muted small" style={{ marginTop: 12 }}>
+              <div className={`${ui.muted} ${ui.small} mt-3`}>
                 Free models are tagged <code>:free</code> in their slug. Key is stored locally and
                 sent only to OpenRouter.
               </div>
-              <button
-                className="btn btn-primary"
-                style={{ marginTop: 16, width: '100%' }}
-                onClick={saveOpenRouter}
-              >
+              <button className={`${ui.btn} ${ui.btnPrimary} mt-4 w-full`} onClick={saveOpenRouter}>
                 {orSaved ? 'Saved ✓' : 'Save'}
               </button>
             </div>

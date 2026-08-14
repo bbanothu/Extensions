@@ -1,4 +1,4 @@
-// Job Assistant's new-tab grid embeds job sites in iframes; most of them send
+// Resume Assistant's new-tab grid embeds job sites in iframes; most of them send
 // X-Frame-Options/CSP headers that block framing entirely. This rule strips
 // those headers, but only for sub-frame requests our own extension initiates
 // (i.e. iframes inside the grid page) — it never touches normal browsing.

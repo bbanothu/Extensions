@@ -1,5 +1,5 @@
 import MessageSaver from '../components/MessageSaver.jsx';
-import ThemeToggle from '../components/ThemeToggle.jsx';
+import * as ui from '../styles/ui.js';
 
 async function openSidePanel() {
   const win = await chrome.windows.getCurrent();
@@ -8,15 +8,10 @@ async function openSidePanel() {
 
 export default function App() {
   return (
-    <div className="app">
-      <div className="app-header">
-        <div className="logo" />
-        <h1>Job Assistant</h1>
-        <ThemeToggle />
-      </div>
+    <div className={ui.app}>
       <MessageSaver />
-      <div style={{ padding: '0 16px 16px' }}>
-        <button className="btn btn-purple" style={{ width: '100%' }} onClick={openSidePanel}>
+      <div className="px-4 pb-4">
+        <button className={`${ui.btn} ${ui.btnPrimary} w-full`} onClick={openSidePanel}>
           Open Tailor Resume →
         </button>
       </div>

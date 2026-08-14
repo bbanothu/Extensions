@@ -15,6 +15,7 @@ import {
 import { addHistoryEntry } from '../../lib/history.js';
 import { getProfile, serializeProfile } from '../../lib/profile.js';
 import { buildResumeFilename, downloadResumePdf } from '../../lib/pdfExport.js';
+import * as ui from '../../styles/ui.js';
 
 const MODES = [
   { id: 'url', label: 'By URL' },
@@ -224,15 +225,19 @@ export default function TailorResume() {
   const busy = status === 'fetching' || status === 'generating' || status === 'parsing';
 
   return (
-    <div className="panel panel-bottom-actions">
+    <div className={`${ui.panel} ${ui.panelBottomActions}`}>
       <div>
-        <div className="row-between">
-          <label style={{ marginBottom: 0 }}>Source</label>
-          <button className="btn btn-ghost small" onClick={clearDraft} type="button">
+        <div className={ui.rowBetween}>
+          <label className={`${ui.label} mb-0`}>Source</label>
+          <button className={`${ui.btn} ${ui.small}`} onClick={clearDraft} type="button">
             Clear
           </button>
         </div>
-        <select value={mode} onChange={(e) => setMode(e.target.value)} style={{ marginTop: 9 }}>
+        <select
+          className={`${ui.select} mt-2.5`}
+          value={mode}
+          onChange={(e) => setMode(e.target.value)}
+        >
           {MODES.map((m) => (
             <option key={m.id} value={m.id}>
               {m.label}
@@ -242,30 +247,30 @@ export default function TailorResume() {
       </div>
 
       {provider === 'anthropic' && !apiKey && (
-        <div className="card muted small">
+        <div className={`${ui.card} ${ui.muted} ${ui.small}`}>
           No Anthropic API key set yet — add one in Settings (gear icon, top right).
         </div>
       )}
       {provider === 'ollama' && (
-        <div className="card muted small">
+        <div className={`${ui.card} ${ui.muted} ${ui.small}`}>
           Using Ollama locally — pick a model in Settings if you haven't yet.
         </div>
       )}
       {provider === 'openrouter' && (
-        <div className="card muted small">
+        <div className={`${ui.card} ${ui.muted} ${ui.small}`}>
           Using OpenRouter — set your API key and model in Settings if you haven't yet.
         </div>
       )}
 
       {mode === 'custom' ? (
-        <div className="card muted small">
+        <div className={`${ui.card} ${ui.muted} ${ui.small}`}>
           Using your saved Custom Info profile — edit it in Settings → Custom Info.
         </div>
       ) : (
         <div>
-          <label>Resume (PDF)</label>
+          <label className={ui.label}>Resume (PDF)</label>
           <div
-            className={`dropzone${dragOver ? ' dragover' : ''}`}
+            className={`${ui.dropzone} ${dragOver ? ui.dropzoneActive : ''}`}
             onClick={() => fileInputRef.current?.click()}
             onDragOver={(e) => {
               e.preventDefault();
@@ -281,7 +286,7 @@ export default function TailorResume() {
             {status === 'parsing' ? (
               <span>Reading PDF…</span>
             ) : resumeFile || resumeFileName ? (
-              <span className="filename">{resumeFile?.name || resumeFileName} ✓</span>
+              <span className={ui.filename}>{resumeFile?.name || resumeFileName} ✓</span>
             ) : (
               <span>Click or drop your resume PDF here</span>
             )}
@@ -298,9 +303,10 @@ export default function TailorResume() {
 
       {mode === 'url' ? (
         <div>
-          <label>Job Posting URL</label>
+          <label className={ui.label}>Job Posting URL</label>
           <input
             type="url"
+            className={ui.input}
             placeholder="https://company.com/careers/job-id"
             value={jobUrl}
             onChange={(e) => setJobUrl(e.target.value)}
@@ -308,42 +314,46 @@ export default function TailorResume() {
         </div>
       ) : (
         <div>
-          <label>Job Description</label>
+          <label className={ui.label}>Job Description</label>
           <textarea
+            className={`${ui.textarea} min-h-[200px]`}
             placeholder="Paste the job description here…"
             value={jdText}
             onChange={(e) => setJdText(e.target.value)}
-            style={{ minHeight: 200 }}
           />
         </div>
       )}
 
-      {error && <div className="error-box">{error}</div>}
+      {error && <div className={ui.errorBox}>{error}</div>}
 
       {result && (
-        <div className="card">
-          <div className="row-between">
-            <label style={{ marginBottom: 0 }}>Tailored Resume</label>
-            <div className="row">
-              <button className="btn btn-ghost small" onClick={copyResult}>
+        <div className={ui.card}>
+          <div className={ui.rowBetween}>
+            <label className={`${ui.label} mb-0`}>Tailored Resume</label>
+            <div className={ui.row}>
+              <button className={`${ui.btn} ${ui.small}`} onClick={copyResult}>
                 {copied ? 'Copied!' : 'Copy'}
               </button>
-              <button className="btn btn-ghost small" onClick={downloadResult}>
+              <button className={`${ui.btn} ${ui.small}`} onClick={downloadResult}>
                 Download
               </button>
             </div>
           </div>
           <textarea
-            style={{ minHeight: 260, marginTop: 8 }}
+            className={`${ui.textarea} min-h-[260px] mt-2`}
             value={result}
             onChange={(e) => setResult(e.target.value)}
           />
         </div>
       )}
 
-      <div className="bottom-actions">
-        <button className="btn btn-purple" onClick={redoResume} disabled={busy} style={{ flex: 1 }}>
-          {busy && <span className="spinner" />}
+      <div className={ui.bottomActions}>
+        <button
+          className={`${ui.btn} ${ui.btnPrimary} flex-1`}
+          onClick={redoResume}
+          disabled={busy}
+        >
+          {busy && <span className={ui.spinner} />}
           {status === 'fetching' && 'Reading job posting…'}
           {status === 'generating' && 'Rewriting resume…'}
           {!busy && 'Redo This Resume'}
